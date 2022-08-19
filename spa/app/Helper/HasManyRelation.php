@@ -25,7 +25,7 @@ trait HasManyRelation {
     {
         $this->save();
 
-        $parentKey = $this->getKeyName;
+        $parentKey = $this->getKeyName();
         $parentId = $this->getAttribute($parentKey);
 
         foreach($relations as $key => $items) {
@@ -37,8 +37,8 @@ trait HasManyRelation {
                 $localKey = $model->getKeyName();
                 $foreignKey = $this->{$key}()->getForeignKeyName();
 
-                if(isset($item[$foreignKey])) {
-                    $localId = $item[$localId];
+                if(isset($item[$localKey])) {
+                    $localId = $item[$localKey];
                     $found = $model->where($foreignKey, $parentId)
                         ->where($localKey, $localId)
                         ->first();
