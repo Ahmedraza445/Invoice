@@ -5,7 +5,6 @@ namespace App\Helper;
 trait HasManyRelation {
 
     public function storeHasMany($relations)
-
     {
         $this->save();
 
@@ -17,6 +16,7 @@ trait HasManyRelation {
                 $newItems[] = $model->fill($item);
             }
 
+            // save
             $this->{$key}()->saveMany($newItems);
         }
     }
@@ -32,6 +32,7 @@ trait HasManyRelation {
             $updatedIds = [];
             $newItems = [];
 
+            // 1. filter and update
             foreach($items as $item) {
                 $model = $this->{$key}()->getModel();
                 $localKey = $model->getKeyName();
@@ -47,12 +48,13 @@ trait HasManyRelation {
                         $found->fill($item);
                         $found->save();
                         $updatedIds[] = $localId;
-                    } else {
-                        $newItems[] = $model->fill($item);
                     }
+                } else {
+                    $newItems[] = $model->fill($item);
                 }
             }
 
+            // 2. delete non-updated items
             $model = $this->{$key}()->getModel();
             $localKey = $model->getKeyName();
             $foreignKey = $this->{$key}()->getForeignKeyName();
@@ -60,6 +62,7 @@ trait HasManyRelation {
                 ->where($foreignKey, $parentId)
                 ->delete();
 
+            // 3. save new items
             if(count($newItems)) {
                 $this->{$key}()->saveMany($newItems);
             }

@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -17,10 +15,11 @@ class InvoicesTableSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
+
         Invoice::truncate();
         InvoiceItem::truncate();
 
-        foreach(range(1, 25)as $i) {
+        foreach(range(1, 25) as $i) {
             $invoice = Invoice::create([
                 'number' => 'INV-2000'.$i,
                 'customer_id' => $i,
@@ -32,7 +31,7 @@ class InvoicesTableSeeder extends Seeder
                 'sub_total' => mt_rand(1000, 2000)
             ]);
 
-            foreach(range(1, mt_rand(2, 4)) as $i) {
+            foreach(range(1, mt_rand(2, 4)) as $j) {
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
                     'product_id' => mt_rand(1, 40),

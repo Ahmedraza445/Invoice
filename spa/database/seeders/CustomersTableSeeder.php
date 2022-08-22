@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\Customer;
 use Faker\Factory;
@@ -26,7 +24,6 @@ class CustomersTableSeeder extends Seeder
                 'email' => $faker->safeEmail,
                 'address' => $faker->address
             ]);
-        }
-    
+        }    
     }
 }

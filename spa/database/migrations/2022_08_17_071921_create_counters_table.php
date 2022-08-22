@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Counter;
-use PHPUnit\Framework\Constraint\Count;
 
 class CreateCountersTable extends Migration
 {
@@ -26,7 +25,7 @@ class CreateCountersTable extends Migration
         Counter::create([
             'key'=>'invoice',
             'prefix' => 'INV-',
-            'value'=>10000
+            'value' => 10000
         ]);
     }
 

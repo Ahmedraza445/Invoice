@@ -3,20 +3,13 @@
     margin: 50px auto;
     box-shadow: $box-shadow;
     padding: 25px;
-
     &-body {
         padding-top: 25px;
     }
-
-    &-body {
-        padding-top: 25px;
-    }
-
     &-footer {
         padding-top: 25px;
         width: 50%;
     }
-
     &-title {
         font-size: 18px;
         line-height: 18px;
@@ -33,7 +26,7 @@
                 vertical-align: top;
                 text-align: right;
                 &:nth-child(2n) {
-                padding-left: 15px;
+                    padding-left: 15px;
                 }
             }
         }
@@ -45,12 +38,10 @@
         th:last-child {
             text-align: right;
         }
-
         td:last-child {
             text-align: right;
         }
     }
-
     tfoot {
         border-top: 2px solid $border-color;
         tr {

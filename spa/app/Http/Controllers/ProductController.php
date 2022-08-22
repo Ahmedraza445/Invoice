@@ -14,7 +14,6 @@ class ProductController extends Controller
                 $query->where('item_code', 'like', '%'.request('q').'%')
                 ->orWhere('description', 'like', '%'.request('q').'%');
             })
-
             ->limit(6)
             ->get();
 

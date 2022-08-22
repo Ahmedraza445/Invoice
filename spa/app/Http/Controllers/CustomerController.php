@@ -21,6 +21,4 @@ class CustomerController extends Controller
         return response()
             ->json(['results' => $results]);
     }
-
-    
 }

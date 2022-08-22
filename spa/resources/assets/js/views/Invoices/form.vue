@@ -8,8 +8,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Customer</label>
-                        <typeahead :url="customerURL" :initialize="form.customer" 
-                            @input="onCustomer" />
+                        <typeahead :url="customerURL" :initialize="form.customer" @input="onCustomer" />
                         <small class="error-control" v-if="errors.customer_id">
                             {{errors.customer_id[0]}}
                         </small>
@@ -32,8 +31,8 @@
                         </label>
                         <input type="text" class="form-control" v-model="form.reference">
                         <small class="error-control" v-if="errors.reference">
-                            {{errors.reference[0]}}</small>
-
+                            {{errors.reference[0]}}
+                        </small>
                     </div>
                 </div>
             </div>
@@ -58,111 +57,109 @@
                 </div>
             </div>
             <hr>
-                <table class="form-table">
-                    <thead>
-                        <tr>
-                            <th>Item Description</th>
-                            <th>Unit Price</th>
-                            <th>Qty</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, index) in form.items">
-                            <td class="w-14">
-                                <Typeahead :url="productURL" :initialize="item.product"
-                                    @input="onProduct(index, $event)" />
-                                <small class="error-control" v-if="errors['items.${index}.product_id']">
-                                    {{errors['items.${index}.product_id'][0]}}
-                                </small>
-                            </td>
+            <table class="form-table">
+                <thead>
+                    <tr>
+                        <th>Item Description</th>
+                        <th>Unit Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in form.items">
+                        <td class="w-14">
+                            <Typeahead :url="productURL" :initialize="item.product"
+                                @input="onProduct(index, $event)" />
+                            <small class="error-control" v-if="errors[`items.${index}.product_id`]">
+                                {{errors[`items.${index}.product_id`][0]}}
+                            </small>
+                        </td>
 
-                            <td class="w-4">
-                                <input type="text" class="form-control" v-model="item.unit_price">
-                                <small class="error-control" v-if="errors['items.${index}.unit_price']">
-                                    {{errors['items.${index}.unit_price'][0]}}
-                                </small>
-                            </td>
+                        <td class="w-4">
+                            <input type="text" class="form-control" v-model="item.unit_price">
+                            <small class="error-control" v-if="errors[`items.${index}.unit_price`]">
+                                {{errors[`items.${index}.unit_price`][0]}}
+                            </small>
+                        </td>
 
-                            <td class="w-2">
-                                <input type="text" class="form-control" v-model="item.qty">
-                                <small class="error-control" v-if="errors['items.${index}.qty']">
-                                    {{errors['items.${index}.qty'][0]}}
-                                </small>
-                            </td>
+                        <td class="w-2">
+                            <input type="text" class="form-control" v-model="item.qty">
+                            <small class="error-control" v-if="errors[`items.${index}.qty`]">
+                                {{errors[`items.${index}.qty`][0]}}
+                            </small>
+                        </td>
 
-                            <td class="w-4">
-                                <span class="form-control">
-                                    {{Number(item.qty) * Number(item.unit_price) | formatMoney}}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="form-remove" @click="removeItem(index)">&times;</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2">
-                                <button class="btn btn-sm"
-                                @click="addNewLine">Add New Line</button>
-                            </td>
-                            <td class="form-sumary">Sub Total</td>
-                            <td>{{subTotal | formatMoney}}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="form-summary">Discount</td>
-                            <td>
-                                <input type="text" class="form-control" v-model="form.discount">
-                                <small class="form-control" v-if="errors.discount">
-                                    {{errors.discount[0]}}
-                                </small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="form-summary">Grand Total</td>
-                            <td>{{total | formatMoney}}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Terms and Conditions</label>
-                                <textarea class="form-control" v-model="form.terms_and_conditions"></textarea>
-                                <small class="error-control"> v-if="errors.terms_and_conditions">
-                                    {{errors.terms_and_conditions[0]}}
-                                </small>
-                            </div>
-                        </div>
+                        <td class="w-4">
+                            <span class="form-control">
+                                {{Number(item.qty) * Number(item.unit_price) | formatMoney}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="form-remove" @click="removeItem(index)">&times;</span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button class="btn btn-sm"
+                            @click="addNewLine">Add New Line</button>
+                        </td>
+                        <td class="form-sumary">Sub Total</td>
+                        <td>{{subTotal | formatMoney}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="form-summary">Discount</td>
+                        <td>
+                            <input type="text" class="form-control" v-model="form.discount">
+                            <small class="form-control" v-if="errors.discount">
+                                {{errors.discount[0]}}
+                            </small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="form-summary">Grand Total</td>
+                        <td>{{total | formatMoney}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Terms and Conditions</label>
+                        <textarea class="form-control" v-model="form.terms_and_conditions"></textarea>
+                        <small class="error-control" v-if="errors.terms_and_conditions">
+                            {{errors.terms_and_conditions[0]}}
+                        </small>
                     </div>
+                </div>
+            </div>
         </div>
         <div class="panel-footer flex-end">
             <div>
-                <button class="btn bnt-primary" :disabled="isProcessing" @click="onSave">Save</button>
+                <button class="btn btn-primary" :disabled="isProcessing" @click="onSave">Save</button>
                 <button class="btn" :disabled="isProcessing" @click="onCancel">Cancel</button>
             </div>
         </div>
     </div>
 </template>
 <script type="text/javascript">
-    import { tsImportEqualsDeclaration } from '@babel/types'
-import Vue from 'vue'
+    import Vue from 'vue'
     import {get, byMethod} from '../../lib/api'
     import {Typeahead} from '.././components/typeahead'
-import Typeahead from '../../components/typeahead/Typeahead.vue'
 
     function initialize(to) {
         let urls = {
-            'create': '/api/invoices/create',
-            'edit': '/api/invoices/${to.params.id}/edit'
+            'create': `/api/invoices/create`,
+            'edit': `/api/invoices/${to.params.id}/edit`
         }
 
         return (urls[to.meta.mode] || urls['create'])
     }
     export default {
-        components: { Typeahead, Typeahead },
+        components: {Typeahead},
         data () {
             return {
                 form: {},
@@ -187,7 +184,7 @@ import Typeahead from '../../components/typeahead/Typeahead.vue'
             this.show = false
             get(initialize(to))
                .then((res) => {
-                    setdata(res)
+                    this.setdata(res)
                     next()
                 })
         },
@@ -208,7 +205,7 @@ import Typeahead from '../../components/typeahead/Typeahead.vue'
                 Vue.set(this.$data, 'form', res.data.form)
 
                 if(this.$route.meta.mode === 'edit') {
-                   this.store = '/api/invoices/${this.$route.params.id}'
+                   this.store = `/api/invoices/${this.$route.params.id}`
                     this.method = 'PUT'
                     this.title = 'Edit'
                 }
@@ -226,7 +223,7 @@ import Typeahead from '../../components/typeahead/Typeahead.vue'
                 })
             },
 
-            onCustomer() {
+            onCustomer(e) {
                 const customer = e.target.value
                 Vue.set(this.$data.form, 'customer', customer)
                 Vue.set(this.$data.form, 'customer_id', customer.id)
@@ -241,13 +238,6 @@ import Typeahead from '../../components/typeahead/Typeahead.vue'
             },
             removeItem(index){
                 this.form.items.splice(index, 1)
-            },
-            onProduct() {
-
-            },
-
-            removeItem() {
-
             },
             onCancel(){
                 if(this.$route.meta.mode === 'edit') {

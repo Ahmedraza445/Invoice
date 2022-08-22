@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export function get(url, params) {
     return axios({
-        mdetho: 'GET',
+        method: 'GET',
         url: url,
         params: params
     })

@@ -35,7 +35,6 @@ $basewidth: 4.166667%;
         flex-basis: $basewidth * $i;
         max-width: $basewidth * $i;
     }
-
     .col-offset-#{$i} {
         margin-left: $basewidth * $i;
     }
@@ -50,6 +49,10 @@ $basewidth: 4.166667%;
 }
 
 .flex-center {
+    justify-content: flex-center;
+}
+
+.flex-end {
     justify-content: flex-end;
 }
 

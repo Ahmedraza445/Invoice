@@ -10,18 +10,18 @@
     user-select: none;
     background: $color-grey;
     box-shadow: 0 1px darken($color-grey, 10%);
-
     &:focus {
         outline-style: dotted;
         outline-width: 1px;
         outline-offset: 1px;
     }
-
     &:active {
+        box-shadow: $box-shadow;
+    }
+    &[disabled] {
         opacity: 0.75;
         cursor: not-allowed;
     }
-
 }
 
 a.btn {

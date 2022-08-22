@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Counter;
-use DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
 
 class InvoiceController extends Controller
-{
-    //
+{    
     public function index()
     {
         $results = Invoice::with(['customer'])
@@ -22,7 +20,6 @@ class InvoiceController extends Controller
     }
 
     public function create()
-
     {
         $counter = Counter::where('key', 'invoice')->first();
 
@@ -49,7 +46,6 @@ class InvoiceController extends Controller
             ->json(['form' => $form]);
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -57,10 +53,10 @@ class InvoiceController extends Controller
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
             'reference' => 'nullable|max:100',
-            'discount' => 'required|array|min:1',
+            'discount' => 'required|numeric|min:0',
             'terms_and_conditions' => 'required|max:2000',
             'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|integer|exists;products,id',
+            'items.*.product_id' => 'required|integer|exists:products,id',
             'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.qty' => 'required|integer|min:1'
         ]);
@@ -68,7 +64,7 @@ class InvoiceController extends Controller
         $invoice = new Invoice;
         $invoice->fill($request->except('items'));
 
-        $invoice->sub_total=collect($request->items)->sum(function($item) {
+        $invoice->sub_total = collect($request->items)->sum(function($item) {
             return $item['qty'] * $item['unit_price'];
         });
 
@@ -76,11 +72,12 @@ class InvoiceController extends Controller
             $counter = Counter::where('key', 'invoice')->first();
             $invoice->number = $counter->prefix . $counter->value;
 
+            // custom method from app/Helper/HasManyRelation
             $invoice->storeHasMany([
                 'items' => $request->items
             ]);
 
-            $counter->value();
+            $counter->increment('value');
 
             return $invoice;
         });
@@ -91,7 +88,7 @@ class InvoiceController extends Controller
 
     public function show($id)
     {
-        $model = Invoice::with(['customer', 'item.product'])
+        $model = Invoice::with(['customer', 'items.product'])
             ->findOrFail($id);
 
         return response()
@@ -110,12 +107,13 @@ class InvoiceController extends Controller
     public function update($id, Request $request)
     {
         $invoice = Invoice::findOrFail($id);
+
         $request->validate([
-            'customer_id' => 'required|integer|exists:customers_id',
+            'customer_id' => 'required|integer|exists:customers,id',
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
             'reference' => 'nullable|max:100',
-            'discount' => 'required|array|min:1',
+            'discount' => 'required|numeric|min:0',
             'terms_and_conditions' => 'required|max:2000',
             'items' => 'required|array|min:1',
             'items.*.id' => 'sometimes|required|integer|exists:invoice_items,id,invoice_id,'.$invoice->id,
@@ -124,7 +122,6 @@ class InvoiceController extends Controller
             'items.*.qty' => 'required|integer|min:1'
         ]);
 
-        $invoice = new Invoice;
         $invoice->fill($request->except('items'));
 
         $invoice->sub_total=collect($request->items)->sum(function($item) {
@@ -132,7 +129,7 @@ class InvoiceController extends Controller
         });
 
         $invoice = FacadesDB::transaction(function() use ($invoice, $request) {
-
+            // custom method from app/Helper/HasManyRelation
             $invoice->updateHasMany([
                 'items' => $request->items
             ]);
@@ -155,8 +152,4 @@ class InvoiceController extends Controller
         return response()
             ->son(['deleted' => true]);
     }
-
-    
-    
-
 }

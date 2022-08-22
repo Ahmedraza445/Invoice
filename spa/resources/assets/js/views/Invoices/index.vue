@@ -8,7 +8,6 @@
                 </router-link>
             </div>
         </div>
-        
         <div class="panel-body">
             <table class="table table-link">
                 <thead>
@@ -26,16 +25,16 @@
                         <td class="w-1">{{item.id}}</td>
                         <td class="w-3">{{item.date}}</td>
                         <td class="w-3">{{item.number}}</td>
-                        <td class="w-9">{{item.customer}}</td>
+                        <td class="w-9">{{item.customer.text}}</td>
                         <td class="w-3">{{item.due_date}}</td>
-                        <td class="w-3">{{item.total | formatMoney}}</td></tr>
+                        <td class="w-3">{{item.total | formatMoney}}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-
-        <div class="panel-footer">
+        <div class="panel-footer flex-between">
             <div>
-                <small>Showing {{model.from}} - {{model.total}}</small>
+                <small>Showing {{model.from}} - {{model.to}} of {{model.total}}</small>
             </div>
             <div>
                 <button class="btn btn-sm" :disabled="!model.prev_page_url" @click="prevPage">
@@ -48,7 +47,6 @@
         </div>
     </div>
 </template>
-
 <script type="text/javascript">
     import Vue from 'vue'
     import { get } from '../../lib/api'
@@ -60,14 +58,12 @@
                 }
             }
         },
-
         beforeRouteEnter(to, from, next) {
             get('/api/invoices', to.query)
                 .them((res) => {
                     next(vm => vm.setData(res))
                 })
         },
-
         beforeRouteUpdate(to, from, next) {
             get('/api/invoices', to.query)
                 .them((res) => {
@@ -75,13 +71,11 @@
                     next()
                 })
         },
-
         methods: {
             detailsPage(item) {
-                this.$router.push('/invoices/$(item, id)')
+                this.$router.push(`/invoices/${item.id}`)
             },
-
-            setdata(res) {
+            setData(res) {
                 Vue.set(this.$data, 'model', res.data.results)
                 this.page = this.model.current_page
                 this.$bar.finish()
@@ -97,7 +91,7 @@
                     })
                 }
             },
-            prevpage() {
+            prevPage() {
                 if(this.model.prev_page_url) {
                     const query = Object.assign({}, this.$route.query)
                     query.page = query.page ? (Number(query.page) - 1) : 1

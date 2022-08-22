@@ -3,7 +3,6 @@
     margin-bottom: 16px;
     border-radius: $border-radius;
     box-shadow: $box-shadow;
-
     &-heading {
         padding: 8px;
         display: flex;
@@ -11,16 +10,13 @@
         align-items: center;
         border-bottom: 1px solid $border-color;
     }
-
     &-body {
         padding: 8px;
     }
-
     &-title {
         font-size: 18px;
         line-height: 24px;
     }
-
     &-footer {
         padding: 8px;
         display: flex;

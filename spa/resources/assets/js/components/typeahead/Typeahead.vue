@@ -1,7 +1,7 @@
 <template>
     <div :class="[isOpen ? 'typeahead typeahead-open' : 'typeahead']">
         <div class="typeahead-inner">
-            <div class="form-control typeahead-selected" :tabindex="tabindex">
+            <div class="form-control typeahead-selected" :tabindex="tabindex"
                 ref = "toggle"
                 @click="onToggle"
                 @keydown="onKey">
@@ -16,7 +16,7 @@
                             @keydown.esc="onEsc"
                             @keydown.up="onUpKey"
                             @keydown.down="onDownKey"
-                            @keydown.enter="onEnterKey"/>
+                            @keydown.enter="onEnterKey">
                     </div>
                     <ul class="typeahead-list" v-if="results.length">
                         <li class="typeahead-item" v-for="(result, index) in results" :key="result.id">
@@ -45,6 +45,9 @@
                 required: true
             },
             tabindex: {
+                default: 0
+            },
+            data () {
                 return {
                     selectIndex: -1,
                     isOpen: false,
@@ -110,7 +113,7 @@
                 },
                 onDownKey(e) {
                     if(this.results.length - 1 > this.selecIndex) {
-                        this.selecIndex++
+                        this.selectIndex++
                     }
                 },
                 onEnterKey() {
