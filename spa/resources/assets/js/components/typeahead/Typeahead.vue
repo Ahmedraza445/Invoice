@@ -46,23 +46,24 @@
             },
             tabindex: {
                 default: 0
-            },
-            data () {
-                return {
-                    selectIndex: -1,
-                    isOpen: false,
-                    search: '',
-                    results: []
-                }
-            },
-            computed: {
-                selectedText() {
-                    return this.initialize && this.initialize.text
-                    ? this.initialize.text
-                    : 'Type or click to select'
-                }
-            },
-            method: {
+            }
+        },
+        data () {
+            return {
+                selectIndex: -1,
+                isOpen: false,
+                search: '',
+                results: []
+            }
+        },
+        computed: {
+            selectedText() {
+                return this.initialize && this.initialize.text
+                ? this.initialize.text
+                : 'Type or click to select'
+            }
+        },
+            methods: {
                 onToggle() {
                     if(this.isOpen) {
                         this.isOpen = false
@@ -135,4 +136,4 @@
                 }
             }
         }
-    }</script>
+    </script>

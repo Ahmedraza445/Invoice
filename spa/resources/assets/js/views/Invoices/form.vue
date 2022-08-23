@@ -1,4 +1,5 @@
 <template>
+
     <div class="panel" v-if="show">
         <div class="panel-heading">
             <span class="panel-title">{{title}} Invoice</span>
@@ -82,14 +83,12 @@
                                 {{errors[`items.${index}.unit_price`][0]}}
                             </small>
                         </td>
-
                         <td class="w-2">
                             <input type="text" class="form-control" v-model="item.qty">
                             <small class="error-control" v-if="errors[`items.${index}.qty`]">
                                 {{errors[`items.${index}.qty`][0]}}
                             </small>
                         </td>
-
                         <td class="w-4">
                             <span class="form-control">
                                 {{Number(item.qty) * Number(item.unit_price) | formatMoney}}
@@ -148,7 +147,7 @@
 <script type="text/javascript">
     import Vue from 'vue'
     import {get, byMethod} from '../../lib/api'
-    import {Typeahead} from '.././components/typeahead'
+    import {Typeahead} from '../../components/typeahead'
 
     function initialize(to) {
         let urls = {
@@ -188,14 +187,12 @@
                     next()
                 })
         },
-
         computed: {
             subTotal() {
                 return this.form.items.reduce((carry, item) => {
                     return carry + (Number(item.unit_price) * Number(item.qty))
                 }, 0)
             },
-
             total() {
                 return this.subTotal - Number(this.form.discount)
             }
@@ -213,7 +210,6 @@
                 this.show = true
                 this.$bar.finish()
             },
-
             addNewLine() {
                 this.form.items.push({
                     product_id: null,
@@ -222,13 +218,11 @@
                     qty: 1
                 })
             },
-
             onCustomer(e) {
                 const customer = e.target.value
                 Vue.set(this.$data.form, 'customer', customer)
                 Vue.set(this.$data.form, 'customer_id', customer.id)
             },
-
             onProduct(index, e) {
                 const product = e.target.value
                 Vue.set(form.$data.items[index], 'product', product)

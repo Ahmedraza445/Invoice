@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
+use App\Models\Customer;
 use App\Models\Counter;
-use Illuminate\Support\Facades\DB as FacadesDB;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {    
@@ -14,7 +16,7 @@ class InvoiceController extends Controller
         $results = Invoice::with(['customer'])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
-
+        // dd($results);
         return response()
             ->json(['results'=> $results]);
     }
@@ -48,8 +50,9 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
+        // dd(request()->all());
         $request->validate([
-            'customer_id' => 'required|integer|exists:customers_id',
+            'customer_id' => 'required|integer|exists:customers,id',
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
             'reference' => 'nullable|max:100',
@@ -68,7 +71,7 @@ class InvoiceController extends Controller
             return $item['qty'] * $item['unit_price'];
         });
 
-        $invoice = FacadesDB::transaction(function() use ($invoice, $request) {
+        $invoice = DB::transaction(function() use ($invoice, $request) {
             $counter = Counter::where('key', 'invoice')->first();
             $invoice->number = $counter->prefix . $counter->value;
 
@@ -128,7 +131,7 @@ class InvoiceController extends Controller
             return $item['qty'] * $item['unit_price'];
         });
 
-        $invoice = FacadesDB::transaction(function() use ($invoice, $request) {
+        $invoice = DB::transaction(function() use ($invoice, $request) {
             // custom method from app/Helper/HasManyRelation
             $invoice->updateHasMany([
                 'items' => $request->items

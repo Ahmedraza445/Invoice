@@ -48,7 +48,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import Vue from 'vue'
+import Vue from 'vue'
     import { get } from '../../lib/api'
     export default {
         data () {
@@ -60,13 +60,13 @@
         },
         beforeRouteEnter(to, from, next) {
             get('/api/invoices', to.query)
-                .them((res) => {
+                .then((res) => {
                     next(vm => vm.setData(res))
                 })
         },
         beforeRouteUpdate(to, from, next) {
             get('/api/invoices', to.query)
-                .them((res) => {
+                .then((res) => {
                     this.setData(res)
                     next()
                 })
@@ -76,9 +76,10 @@
                 this.$router.push(`/invoices/${item.id}`)
             },
             setData(res) {
+                Console.log(res);
                 Vue.set(this.$data, 'model', res.data.results)
                 this.page = this.model.current_page
-                this.$bar.finish()
+                // this.$bar.finish()
             },
             nextPage() {
                 if(this.model.next_page_url) {
