@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-form="item in model.data" :key="item.data" @click="detailsPage(item)">
+                    <tr v-for="item in model.data" :key="item.data" @click="detailsPage(item)">
                         <td class="w-1">{{item.id}}</td>
                         <td class="w-3">{{item.date}}</td>
                         <td class="w-3">{{item.number}}</td>
@@ -48,7 +48,7 @@
     </div>
 </template>
 <script type="text/javascript">
-import Vue from 'vue'
+    import Vue from 'vue'
     import { get } from '../../lib/api'
     export default {
         data () {
@@ -76,10 +76,10 @@ import Vue from 'vue'
                 this.$router.push(`/invoices/${item.id}`)
             },
             setData(res) {
-                Console.log(res);
-                Vue.set(this.$data, 'model', res.data.results)
+                Vue.set(this.$data, 'model', res.data.data.data)
                 this.page = this.model.current_page
-                // this.$bar.finish()
+                this.$bar.finish()
+                console.log(res)
             },
             nextPage() {
                 if(this.model.next_page_url) {

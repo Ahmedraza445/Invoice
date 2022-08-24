@@ -61,7 +61,7 @@
                             <tr v-for="item in model.items" :key="item.id">
                                 <td class="w-3">{{item.product.item_code}}</td>
                                 <td class="w-12">
-                                    <pre>{{item.product.item_code}}</pre>
+                                    <pre>{{item.product.description}}</pre>
                                 </td>
                                 <td class="w-3">{{item.unit_price | formatMoney}}</td>
                                 <td class="w-2">{{item.qty}}</td>
@@ -121,8 +121,8 @@
                 })
         },
         methods: {
-            setdata(res) {
-                Vue.set(this.$date, 'model', res.data.model)
+            setData(res) {
+                Vue.set(this.$data, 'model', res.data.model)
                 this.show = true
                 this.$bar.finish()
             },

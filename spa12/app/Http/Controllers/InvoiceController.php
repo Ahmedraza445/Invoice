@@ -13,12 +13,12 @@ class InvoiceController extends Controller
 {    
     public function index()
     {
-        $results = Invoice::with(['customer'])
+        $data = Invoice::with(['customer'])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
         // dd($results);
         return response()
-            ->json(['results'=> $results]);
+            ->json(['data'=> $data]);
     }
 
     public function create()
@@ -100,7 +100,7 @@ class InvoiceController extends Controller
 
     public function edit($id)
     {
-        $form = Invoice::with(['customer', 'item.product'])
+        $form = Invoice::with(['customer', 'items.product'])
             ->findOrFail($id);
 
         return response()
@@ -120,7 +120,7 @@ class InvoiceController extends Controller
             'terms_and_conditions' => 'required|max:2000',
             'items' => 'required|array|min:1',
             'items.*.id' => 'sometimes|required|integer|exists:invoice_items,id,invoice_id,'.$invoice->id,
-            'items.*.product_id' => 'required|integer|exists;products,id',
+            'items.*.product_id' => 'required|integer|exists:products,id',
             'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.qty' => 'required|integer|min:1'
         ]);
@@ -153,6 +153,6 @@ class InvoiceController extends Controller
         $invoice->delete();
 
         return response()
-            ->son(['deleted' => true]);
+            ->json(['deleted' => true]);
     }
 }

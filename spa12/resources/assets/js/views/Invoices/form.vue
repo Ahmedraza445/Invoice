@@ -17,10 +17,10 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <lable>
+                        <label>
                             Number
                             <small>Auto Generated</small>
-                        </lable>
+                        </label>
                         <span class="form-control">{{form.number}}</span>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                 isProcessing: false,
                 show: false,
                 resource: '/invoices',
-                store: 'api/invoices',
+                store: '/api/invoices',
                 method: 'POST',
                 title: 'Create',
                 productURL: '/api/products',
@@ -183,7 +183,7 @@
             this.show = false
             get(initialize(to))
                .then((res) => {
-                    this.setdata(res)
+                    this.setData(res)
                     next()
                 })
         },
@@ -225,10 +225,10 @@
             },
             onProduct(index, e) {
                 const product = e.target.value
-                Vue.set(form.$data.items[index], 'product', product)
-                Vue.set(form.$data.items[index], 'product_id', product.id)
+                Vue.set(this.form.items[index], 'product', product)
+                Vue.set(this.form.items[index], 'product_id', product.id)
 
-                Vue.set(form.$data.items[index], 'unit_price', product.unit_price)
+                Vue.set(this.form.items[index], 'unit_price', product.unit_price)
             },
             removeItem(index){
                 this.form.items.splice(index, 1)
